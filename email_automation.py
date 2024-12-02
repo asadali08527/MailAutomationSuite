@@ -44,7 +44,8 @@ class EmailAutomation:
             login_button.click()
             logging.info("Clicked login button")
             # Wait for the inbox to load
-            wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[3]/div[2]/div[1]/div/div/div/div[4]/div[3]/div[1]/div[3]/ul[2]")))
+            wait.until(EC.presence_of_element_located(
+                (By.XPATH, "/html/body/div[3]/div[2]/div[1]/div/div/div/div[4]/div[3]/div[1]/div[3]/ul[2]")))
             logging.info("Inbox loaded successfully")
         except ElementClickInterceptedException:
             logging.warning("Login button click intercepted, using JavaScript to click instead")
@@ -55,7 +56,8 @@ class EmailAutomation:
 
     def close_overlay(self):
         try:
-            overlay_close_button = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".reject-btn-container button")))
+            overlay_close_button = self.wait.until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, ".reject-btn-container button")))
             overlay_close_button.click()
             logging.info("Closed overlay or cookie consent banner")
         except TimeoutException:
@@ -84,7 +86,8 @@ class EmailAutomation:
 
     def _open_email(self, email_element, email_index):
         try:
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", email_element)
+            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});",
+                                       email_element)
             time.sleep(0.5)
             email_element.click()
         except ElementClickInterceptedException:
@@ -94,9 +97,11 @@ class EmailAutomation:
 
     def _extract_email_address(self):
         try:
-            iframe_element = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "section.body iframe.mail-detail-frame")))
+            iframe_element = self.wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "section.body iframe.mail-detail-frame")))
             self.driver.switch_to.frame(iframe_element)
-            email_address_element = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[href^='mailto:']")))
+            email_address_element = self.wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "a[href^='mailto:']")))
             email_href = email_address_element.get_attribute("href").replace("mailto:", "")
             parsed_url = urlparse(email_href)
             email_address = parsed_url.path

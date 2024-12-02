@@ -225,7 +225,6 @@ try:
             logging.error("Element not found within the expected time. Skipping to the next email.")
             email_index += 1
         
-
 finally:
     # Close the browser
     driver.quit()
